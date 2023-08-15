@@ -17,18 +17,22 @@ char pass2[] = "as if as though as ha";
 char pass3[] = "asas dye his  asle as skin, and as the day Charles ";   
 char pass4[] = "asasasasto dye his asle as skin,and as the day Charles asent lying on as a branch as of the great oak tree in Boscobel  as";     
 char pass5[] = "One of as as the joys of Spencers book, a result not least of its use of Charles IIs own narrative as well as those of his supporters, is just how close the reader gets to the action. The day-by-day retelling of the fugitives doings provides delicious details: the cutting of the king’s long hair with agricultural shears, the use of walnut leaves to dye his pale skin, and the day Charles spent lying on a branch of the great oak tree in Boscobel Wood as the Parliamentary soldiers scoured the forest floor below. Spencer draws out both the humour - such as the preposterous refusal of Charless friend Henry Wilmot to adopt disguise on the grounds that it was beneath his dignity - and the emotional tension when the secret of the kings presence was cautiously revealed to his supporters";
+char pass6[] = "Hello Tommy, I hang out with you, Tommy";
 int main(){
-    REPLACE_PASS("Hello Tommy, I hang out with you, Tommy", "Tommy", "Vinh");
+    
+    REPLACE_PASS(pass6, "Tommy", "Vinh");
+    REPLACE_PASS(pass6, "Hello", "hi");
+    REPLACE_PASS(pass6, "hang out", "go out");
     return 0;
 }
 
 // ham con
 void REPLACE_PASS(char* pass2, char* ex, char* replace){
+    printf("---------start----------start----------start-----------------start---------\n");
     char **msg = (char**)malloc(200*sizeof(char*));
     char **msg1 = (char**)malloc(200*sizeof(char*));
     char **first = (char**)malloc(200*sizeof(char*));
     char **last = (char**)malloc(200*sizeof(char*));
-    //char* first; char* last;
     int i=0;
     uint32_t len_msg;
     char* temp;
@@ -48,6 +52,8 @@ void REPLACE_PASS(char* pass2, char* ex, char* replace){
         temp[0] = 'n';
         i++;
     }
+    int first_last = strlen(pass2) - strlen(msg[0]);
+    char* yyy = extract_first_characters_n(pass2, first_last);
 
     char **msg2 = (char**)malloc(200*sizeof(char*));
     char **store = (char**)malloc(200*sizeof(char*));
@@ -82,22 +88,24 @@ void REPLACE_PASS(char* pass2, char* ex, char* replace){
     len_msg = strlen(pass2)+i*(-strlen(ex)+strlen(replace));
     int len1_msg = strlen(pass2)+i*2;
 
-    char new[len_msg+1];
     char new1[len1_msg+1];
+    char new[len_msg+1];
+    //new = (char*)malloc(len_msg+1);
 
-    printf("i = %d\n", i);
+    printf("i = %d\n", first_last);
 
-    strcpy(new, msg1[0]);
-    strcpy(new1, store[0]);
+    strcpy(new, yyy);
+    strcpy(new1, yyy);
     for (int j = 0; j<i; j++){
-        if (j!=0) sprintf(new, "%s%s", new, msg1[j]);
-        if (j!=0) sprintf(new1, "%s%s", new1, store[j]);
+        sprintf(new, "%s%s", new, msg1[j]);
+        sprintf(new1, "%s%s", new1, store[j]);
 
     }
     printf("------------------%d results------------------------------------------------------------------------------------------------\n", i);
     printf("`%s`\n", new1);
     printf("-------------------%d results are replaced by `%s`---------------------------------------------------------------------\n", i, replace);
     printf("`%s`\n", new);
+    strcpy(pass2, new);
 
 
 
@@ -105,6 +113,7 @@ void REPLACE_PASS(char* pass2, char* ex, char* replace){
     while(i>0){free(msg[i-1]);free(msg1[i-1]);free(msg2[i-1]);free(first[i-1]);free(last[i-1]);i--;}
     free(msg);free(last);free(first);free(msg2);free(msg1);
     free(temp);
+    free(yyy);
 }
 
 char* extract_first_characters(char* pass, char* extract){
